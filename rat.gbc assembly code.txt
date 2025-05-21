@@ -1,0 +1,79 @@
+FF			|	FF	# PALETTE START, White
+FF			|	FF	#
+94			|	94	# Light gray
+52			|	52	#
+C6			|	C6	# Dark gray
+18			|	18	#
+9F			|	9F	# Pink
+6A			|	6A	# PALETTE END
+
+
+NOP			|	00	# START OF CODE, MAKE THE PALETTE, CONFIRMED TO WORK
+LD HL, n16	|	21	# Load HL with the address of the start of palette hex values
+50			|	50	#
+01			|	01	#
+LD A, n8	|	3E	# Load A with 10000010 (auto-increment, unused bit 6, address 000010)
+82			|	82	#
+LDH [a8], A	|	E0	# Write value of A to address $FF68
+68			|	68	# Almost funny
+LD B, n8	|	06	# Load B. We will decrement B each loop, and break if it is equal to zero
+08			|	08	# Eight iterations
+LD C, n8	|	0E	# Load C with 69. This is done to save space in memory
+69			|	69	# hahaha funny number lol 69
+LD A, [HL+]	|	2A	# LOOP START Load A with the byte pointed to by HL. Increment HL
+LDH [C], A	|	E2	# Load the value stored in A into palette memory
+DEC B		|	05	# Decrement B
+JR NZ, e8	|	20	# If B != 0, loop. If B == 0, break
+FB			|	FB	# Go back 5 bytes
+
+
+
+NOP			|	00	# SETTING LCDC, NOT CONFIRMED TO WORK
+LD A, n8	|	3E	# Setting A to what we want to write int the LCDC register
+80			|	80	# 1000 0100- LCD enabled, unused, window disabled, unused, $8800 method, uses tilemap $9800, rest are unused
+LDH [a8], A	|	E0	# Write A to $FF40
+40			|	40	#
+
+
+
+NOP			|	00	# SETTING UP THE TILE MAP
+LD HL, n16	|	21	# 
+00			|	00	# 
+98			|	98	# 
+LD [HL], n8	|	36	# Map tile 0 to $9800
+00			|	00	#
+
+NOP			|	00	# SETTING UP THE TILES, aligns with $0170 (for reference)
+LD H, n8	|	26	# 
+88			|	88	#
+LD A, n8	|	3E	# 
+00			|	00	#
+LD [HL+], A	| 	22	# Fill in rows 0-2 on tile 0
+LD [HL+], A	|	22	# 
+LD [HL+], A	| 	22	# 
+LD [HL+], A	|	22	# 
+LD [HL+], A	|	22	# Finished rows 0-2 on tile 0
+LD [HL+], A |	22	# Fill in first half of row 3
+LD A, n8	|	3E	#
+01			|	01	#
+LD [HL+], A	|	22	# Fill in the second half of row 3
+LD [HL+], A	|	22	# Fill in the first half of row 4
+LD [HL+], A	|	22	# Fill in the second half of row 4
+LD A, n8	|	3E	# 
+06			|	06	# aligns with $0180 (for reference)
+LD [HL+], A	|	22	# Fill in second half of row 4
+LD [HL+], A	|	22	# Fill in first half of row 5
+LD A, n8	|	3E	# 
+18			|	18	# 
+LD [HL+], A	|	22	# Fill in second half of row 5
+LD A, n8	|	3E	# 
+1E			|	1E	#
+LD [HL+], A	|	22	# Fill in first half of row 6, aligns with $0190 (for reference)
+LD A, n8	|	3E	# 
+11			|	11	#
+LD [HL+]. A	|	22	# FIll in second half of row 6
+LD A, n8	|	3E	#
+0F			|	0F	#
+LD [HL+], A	|	22	# Fill in first half of row 7
+INC A		|	3C	# Incrementing saves a bit of time
+LD [HL+], A	|	22	# Fill in second half of row 7
