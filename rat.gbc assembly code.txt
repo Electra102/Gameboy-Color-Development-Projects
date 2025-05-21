@@ -9,21 +9,21 @@ C6			|	C6	# Dark gray
 
 
 NOP			|	00	# START OF CODE, MAKE THE PALETTE, CONFIRMED TO WORK
-LD HL, n16	|	21	# Load HL with the address of the start of palette hex values
+LD HL, n16             |	21	# Load HL with the address of the start of palette hex values
 50			|	50	#
 01			|	01	#
-LD A, n8	|	3E	# Load A with 10000010 (auto-increment, unused bit 6, address 000010)
+LD A, n8    	       |	3E	# Load A with 10000010 (auto-increment, unused bit 6, address 000010)
 82			|	82	#
-LDH [a8], A	|	E0	# Write value of A to address $FF68
+LDH [a8], A  	       |	E0	# Write value of A to address $FF68
 68			|	68	# Almost funny
-LD B, n8	|	06	# Load B. We will decrement B each loop, and break if it is equal to zero
+LD B, n8	       |	06	# Load B. We will decrement B each loop, and break if it is equal to zero
 08			|	08	# Eight iterations
-LD C, n8	|	0E	# Load C with 69. This is done to save space in memory
+LD C, n8	       |	0E	# Load C with 69. This is done to save space in memory
 69			|	69	# hahaha funny number lol 69
-LD A, [HL+]	|	2A	# LOOP START Load A with the byte pointed to by HL. Increment HL
-LDH [C], A	|	E2	# Load the value stored in A into palette memory
-DEC B		|	05	# Decrement B
-JR NZ, e8	|	20	# If B != 0, loop. If B == 0, break
+LD A, [HL+]  	       |	2A	# LOOP START Load A with the byte pointed to by HL. Increment HL
+LDH [C], A	       |	E2	# Load the value stored in A into palette memory
+DEC B		       |	05	# Decrement B
+JR NZ, e8	       |	20	# If B != 0, loop. If B == 0, break
 FB			|	FB	# Go back 5 bytes
 
 
