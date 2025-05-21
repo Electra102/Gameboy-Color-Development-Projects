@@ -29,9 +29,9 @@ FB			|	FB	# Go back 5 bytes
 
 
 NOP			|	00	# SETTING LCDC, NOT CONFIRMED TO WORK
-LD A, n8	|	3E	# Setting A to what we want to write int the LCDC register
+LD A, n8	      |	3E	# Setting A to what we want to write int the LCDC register
 80			|	80	# 1000 0100- LCD enabled, unused, window disabled, unused, $8800 method, uses tilemap $9800, rest are unused
-LDH [a8], A	|	E0	# Write A to $FF40
+LDH [a8], A	      |	E0	# Write A to $FF40
 40			|	40	#
 
 
